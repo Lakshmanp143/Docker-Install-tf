@@ -7,7 +7,7 @@ resource "aws_instance" "terraform" {
     volume_size = 50  # Set root volume size to 50GB
     volume_type = "gp3"  # Use gp3 for better performance (optional)
   }
-  #user_data = file("docker.sh")
+  user_data = file("docker.sh")
   provisioner "remote-exec" {
     inline = [
       "sudo growpart /dev/nvme0n1 4",
