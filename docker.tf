@@ -8,29 +8,29 @@ resource "aws_instance" "terraform" {
     volume_type = "gp3"  # Use gp3 for better performance (optional)
   }
   user_data = file("docker.sh")
-  provisioner "remote-exec" {
-    inline = [
-      "sudo growpart /dev/nvme0n1 4",
-      "sudo lvextend -l +50%FREE /dev/RootVG/rootVol",
-      "sudo lvextend -l +50%FREE /dev/RootVG/varVol",
-      "sudo xfs_growfs /",
-      "sudo xfs_growfs /var",
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "sudo growpart /dev/nvme0n1 4",
+  #     "sudo lvextend -l +50%FREE /dev/RootVG/rootVol",
+  #     "sudo lvextend -l +50%FREE /dev/RootVG/varVol",
+  #     "sudo xfs_growfs /",
+  #     "sudo xfs_growfs /var",
 
-      "sudo dnf -y install dnf-plugins-core",
-      "sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo",
-      "sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
-      "sudo systemctl enable --now docker",
-      "sudo systemctl start docker",
-      "sudo usermod -aG docker ec2-user"
-    ]
-  }
+  #     "sudo dnf -y install dnf-plugins-core",
+  #     "sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo",
+  #     "sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
+  #     "sudo systemctl enable --now docker",
+  #     "sudo systemctl start docker",
+  #     "sudo usermod -aG docker ec2-user"
+  #   ]
+  # }
   
-  connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    password    = "DevOps321"
-    host        = self.public_ip
-  }
+  # connection {
+  #   type        = "ssh"
+  #   user        = "ec2-user"
+  #   password    = "DevOps321"
+  #   host        = self.public_ip
+  # }
   
   tags = {
     Name = "Docker"
